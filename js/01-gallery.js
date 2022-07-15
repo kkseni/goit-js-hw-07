@@ -12,8 +12,17 @@ galleryDiv.insertAdjacentHTML ('beforeend', imageCardList);
 
 function createImageMarkup(galleryItems) {
     return galleryItems
-        .map(({preview, description}) => {
-            return `<li class="image-card"> <img src=" ${preview}" alt= "${description}" width= 350px /></li>`
+        .map(({preview,original, description}) => {
+            return `<div class="gallery__item">
+  <a class="gallery__link" href="${original}">
+    <img
+      class="gallery__image"
+      src="${preview}"
+      data-source="${description}"
+      alt="Image description"
+    />
+  </a>
+</div>`
         }
         )
         .join('');
