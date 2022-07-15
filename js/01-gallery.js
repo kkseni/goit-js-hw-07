@@ -1,5 +1,5 @@
 import { galleryItems } from './gallery-items.js';
-import * as basicLightbox  from './basiclightbox.js'
+
 
 // Change code below this line
 
@@ -11,14 +11,15 @@ const imageCardList = createImageMarkup(galleryItems)
 galleryDiv.insertAdjacentHTML ('beforeend', imageCardList);
 
 function createImageMarkup(galleryItems) {
+  
     return galleryItems
         .map(({preview,original, description}) => {
             return `<div class="gallery__item">
-  <a class="gallery__link" href="${original}">
+  <a class="gallery__link" href="${description}">
     <img
       class="gallery__image"
       src="${preview}"
-      data-source="${description}"
+      data-source="${original}"
       alt="Image description"
     />
   </a>
@@ -34,19 +35,20 @@ const selectedEl = new Set();
 divGallery.addEventListener('click', onClick);
 
 function onClick(evt) {
+  evt.preventDefault();
     if (evt.target.nodeName !== 'IMG') {
         return;
     }
+  
     const nextActiveImg = evt.target;
-
-    console.log(nextActiveImg.classList.contains('.image-card'));
-
-    nextActiveImg.classList.toggle('.image-card');
-    selectedEl.add(nextActiveImg.dataset.source);
     
+    nextActiveImg.classList.toggle('.gallery__image');
+    
+  selectedEl.add(nextActiveImg.dataset.source);
+  
     const instance = basicLightbox.create(`
-    <img src="nextActiveImg.dataset.source" width="800" height="600">`)
-    instance.show()
+    <img src="${nextActiveImg.dataset.source}" width="800" height="600">`)
+  instance.show()
 }
 
 
