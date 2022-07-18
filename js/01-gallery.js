@@ -20,7 +20,7 @@ function createImageMarkup(galleryItems) {
       class="gallery__image"
       src="${preview}"
       data-source="${original}"
-      alt="Image description"
+      alt="${description}"
     />
   </a>
 </div>`
@@ -36,26 +36,38 @@ divGallery.addEventListener('click', onClick);
 
 function onClick(evt) {
   evt.preventDefault();
-    if (evt.target.nodeName !== 'IMG') {
-        return;
-    }
+  if (evt.target.nodeName !== 'IMG') {
+    return;
+  }
   
-    const nextActiveImg = evt.target;
+  const nextActiveImg = evt.target;
     
-    nextActiveImg.classList.toggle('.gallery__image');
+  nextActiveImg.classList.toggle('.gallery__image');
     
   selectedEl.add(nextActiveImg.dataset.source);
   
-    const instance = basicLightbox.create(`
-    <img src="${nextActiveImg.dataset.source}" width="800" height="600">`)
+  const instance = basicLightbox.create(`
+    <img src="${nextActiveImg.dataset.source}" width="800" height="600">`, {
+      
+    onShow: (instance) => {
+      document.addEventListener("keydown", onPressButton);
+      
+    }
+  })
+
+  function onPressButton(evt) {
+    if (evt.key === 'Escape') {
+      instance.close();
+    
+    }
+  
+  }
   instance.show()
 }
 
 
- // import * as basicLightbox from 'basiclightbox'
 
-// const instance = basicLightbox.create(`
-//     <img src="assets/images/image.png" width="800" height="600">
-// `)
 
-// instance.show()
+
+
+ 
