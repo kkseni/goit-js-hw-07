@@ -32,41 +32,41 @@ function createImageMarkup(galleryItems) {
 const divGallery = document.querySelector('.gallery');
 const selectedEl = new Set();
 
-divGallery.addEventListener('click', onClick);
 
+const nextActiveImg = evt.target;
+
+nextActiveImg.classList.toggle('.gallery__image');
+
+selectedEl.add(nextActiveImg.dataset.source);
+
+divGallery.addEventListener('click', onClick);
+const instance = basicLightbox.create(`
+<img class="modal-img" src="">`, {
+  
+  onShow: instance => {
+    document.addEventListener("keydown", onPressButton);
+    
+  },
+  onClose: instance => {
+    document.removeEventListener("keydown", onPressButton)
+  }
+})
 function onClick(evt) {
   evt.preventDefault();
   if (evt.target.nodeName !== 'IMG') {
     return;
   }
-  
-  const nextActiveImg = evt.target;
-    
-  nextActiveImg.classList.toggle('.gallery__image');
-    
-  selectedEl.add(nextActiveImg.dataset.source);
-  
-  const instance = basicLightbox.create(`
-    <img src="${nextActiveImg.dataset.source}" width="800" height="600">`, {
-      
-    onShow: (instance) => {
-      document.addEventListener("keydown", onPressButton);
-      
-      },
-      onClose: (instance) => {
-        document.removeEventListener("keydown", onPressButton)
-      }
-  })
-
+  instance.element().querySelector('img').src = evt.target.dataset.source;
   instance.show()
+}
   function onPressButton(evt) {
     if (evt.key === 'Escape') {
       instance.close();
-    
+      return;
     }
   
   }
-}
+
 
 
 
