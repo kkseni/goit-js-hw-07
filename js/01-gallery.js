@@ -52,9 +52,13 @@ function onClick(evt) {
     onShow: (instance) => {
       document.addEventListener("keydown", onPressButton);
       
-    }
+      },
+      onClose: (instance) => {
+        document.removeEventListener("keydown", onPressButton)
+      }
   })
 
+  instance.show()
   function onPressButton(evt) {
     if (evt.key === 'Escape') {
       instance.close();
@@ -62,7 +66,6 @@ function onClick(evt) {
     }
   
   }
-  instance.show()
 }
 
 
